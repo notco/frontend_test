@@ -8,7 +8,12 @@
     grid-gap: 16px;
 
     @media screen and (max-width: 480px) {
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media screen and (max-width: 768px) {
+      grid-template-columns: 1fr 1fr;
     }
   }
 
