@@ -22,6 +22,17 @@ const Gallery = ({ users }: GalleryProps) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [sortField, setSortField] = useState("name");
+  const [sortDirection, setSortDirection] = useState("ascending");
+
+  const handleSortFieldChange = (e) => {
+    setSortField(e.value);
+  };
+
+  const handleSortDirectionChange = (e) => {
+    setSortDirection(e.value);
+  };
+
   const handleModalOpen = (id: number) => {
     const user = usersList.find((item) => item.id === id) || null;
 
@@ -36,14 +47,41 @@ const Gallery = ({ users }: GalleryProps) => {
     setIsModalOpen(false);
   };
 
+  const sortedUsersList = usersList.sort((a, b) => {
+    if (sortField === "company") {
+      if (sortDirection === "ascending") {
+        return a.company.name.localeCompare(b.company.name);
+      } else {
+        return b.company.name.localeCompare(a.company.name);
+      }
+    } else {
+      switch(sortDirection) {
+        case "ascending": {
+          return a[sortField].localeCompare(b[sortField]);
+        }
+        case "descending": {
+          return b[sortField].localeCompare(a[sortField]);
+        }
+        default: {
+          return 0;
+        }
+      }
+    }
+  });
+
   return (
     <div className="user-gallery">
       <div className="heading">
         <h1 className="title">Users</h1>
-        <Controls />
+        <Controls
+          onSortFieldChange={handleSortFieldChange}
+          onSortDirectionChange={handleSortDirectionChange}
+          defaultSortField={sortField}
+          defaultSortDirection={sortDirection}
+        />
       </div>
       <div className="items">
-        {usersList.map((user, index) => (
+        {sortedUsersList.map((user, index) => (
           <div
             className="item user-card"
             key={index}
