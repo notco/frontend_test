@@ -20,16 +20,24 @@ const Gallery = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   async function fetchUsers() {
-    const USERS_URL = 'https://jsonplaceholder.typicode.com/users';
-    const usersResponse = await fetch(USERS_URL);
-    const dataUsers = await usersResponse.json();
-    setUsersList(dataUsers);
+    try {
+      const USERS_URL = 'https://jsonplaceholder.typicode.com/users';
+      const usersResponse = await fetch(USERS_URL);
+      const dataUsers = await usersResponse.json();
+      setUsersList(dataUsers);
+    } catch (error) {
+      console.error(error);
+    }
   };
   async function fetchComment() {
-    const COMMENT_URL = 'https://jsonplaceholder.typicode.com/comments/1';
-    const commentResponse = await fetch(COMMENT_URL);
-    const dataComment = await commentResponse.json();
-    setComment(dataComment);
+    try {
+      const COMMENT_URL = 'https://jsonplaceholder.typicode.com/comments/1';
+      const commentResponse = await fetch(COMMENT_URL);
+      const dataComment = await commentResponse.json();
+      setComment(dataComment);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
