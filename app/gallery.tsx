@@ -34,7 +34,7 @@ const Gallery = () => {
       const COMMENT_URL = 'https://jsonplaceholder.typicode.com/comments/1';
       const commentResponse = await fetch(COMMENT_URL);
       const dataComment = await commentResponse.json();
-      setComment(dataComment);
+      setComment(dataComment.body);
     } catch (error) {
       console.error(error);
     }
@@ -140,7 +140,7 @@ const Gallery = () => {
         </Modal>
       </div>
       <h1 className="heading">A great philosopher once said:</h1>
-      <p>{comment.body}</p>
+      <p>{comment}</p>
     </div>
   );
 };
