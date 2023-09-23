@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "boring-avatars";
 import {
   FaRegCircleXmark,
@@ -13,13 +13,29 @@ import Modal from "./modal";
 
 import { User } from "./types/user";
 
-export type GalleryProps = {
-  users: User[];
-};
-const Gallery = ({ users }: GalleryProps) => {
-  const [usersList, setUsersList] = useState(users);
+const Gallery = () => {
+  const [usersList, setUsersList] = useState([]);
+  const [comment, setComment] = useState("");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  async function fetchUsers() {
+    const USERS_URL = 'https://jsonplaceholder.typicode.com/users';
+    const usersResponse = await fetch(USERS_URL);
+    const dataUsers = await usersResponse.json();
+    setUsersList(dataUsers);
+  };
+  async function fetchComment() {
+    const COMMENT_URL = 'https://jsonplaceholder.typicode.com/comments/1';
+    const commentResponse = await fetch(COMMENT_URL);
+    const dataComment = await commentResponse.json();
+    setComment(dataComment);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+    fetchComment();
+  }, [])
 
   const handleModalOpen = (id: number) => {
     const user = usersList.find((item) => item.id === id) || null;
@@ -115,6 +131,8 @@ const Gallery = ({ users }: GalleryProps) => {
           </div>
         </Modal>
       </div>
+      <h1 className="heading">A great philosopher once said:</h1>
+      <p>{comment.body}</p>
     </div>
   );
 };
